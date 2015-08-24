@@ -4,14 +4,13 @@ Meteor.startup(function () {
   var xml = fileSync.readFileSync("../../../../../public/cards.xml", {encoding: 'utf-8'});
   var saveStream = fileSync.createWriteStream("../../../../../public/owned_cards.txt", {encoding: 'utf-8'});
   
-  console.time("Parsing time:");
+  
   doc = new dom().parseFromString(xml);
-  console.timeEnd("Parsing time:");
 
   //response_example is an object with global scope located in public/response_example.js
   var cards = response_example["user_cards"];
   saveStream.write("//Ownedcards:\n");
-
+  console.time("Parsing time:");
   for (cardId in cards){
     var numCardsOwned = cards[cardId]["num_owned"];
     //only lookup names for cards in inventory
@@ -32,5 +31,6 @@ Meteor.startup(function () {
     }
   }
   saveStream.end();
+  console.timeEnd("Parsing time:");
   console.log("owned_cards.txt has been populated.")
 });
