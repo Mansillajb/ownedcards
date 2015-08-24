@@ -1,77 +1,39 @@
 Meteor.startup(function () {
-  console.log("---------------------------------------------------------------");
+
   console.log("Hello, [User]. My name is ownedcards");
+  console.log("---------------------------------------------------------------");
   console.log("I'm located in: " + __meteor_bootstrap__.serverDir);
   
-  var fs = Npm.require('fs');
-  var xml = fs.readFileSync("../../../../../public/cards.xml", {encoding: 'utf-8'});
+  var fileSync = Npm.require('fs');
+  var xml = fileSync.readFileSync("../../../../../public/cards.xml", {encoding: 'utf-8'});
   
   console.time("Parsing time:");
   doc = new dom().parseFromString(xml);
   console.timeEnd("Parsing time:");
 
-  console.log("RESPONSE EXAMPLE BELOW");
+  //response_example is an object with global scope located in response_example.js
+  var cards = response_example["user_cards"];
 
-  var units = response_example["user_cards"];
+  console.log("//Ownedcards:");
+  for (card in cards){
+    var numCardsOwned = cards[card]["num_owned"]; 
 
+    //we know user has this card
+    if (numCardsOwned > 0){
+      console.log("User has "+numCardsOwned + " of " + card+"'s");
+      
+      //query for either card_id or id to obtain name
+      //name via card_id
+      //var nodes_card_id = xpath.select('//unit[upgrade/card_id[text()="'+card+'"]]/name/text()', doc);
+      console.log(nodes_card_id[0]);
 
-  var myCards = [];
-
-  for( var key in units ) {
-    var num_owned = units[key]["num_owned"];
-    if(num_owned !== 0){
-
-      // var theString = '\'//unit[upgrade/card_id[text()="' + key + '"]]/name/text()\''
-      // console.log(theString);
-
-      // theString2 = '\'//upgrade[card_id[text()="'+ key +'"]]/level/text()\''
-      // console.log(theString2);
-
-      console.log(typeof key);
-      var nodes = xpath.select(doc, "//unit");
-      //var nodes_card_id = xpath.select('//unit[upgrade/card_id[text(.)="'+$key+'"]]/name/text()', doc)
-      // var nodes_level = xpath.select('//upgrade[card_id[text(.)="'+key+'"]]/level/text()', doc)
-      //console.log(select([key], "name/tetx()")[0].data +"-"+ select(nodes[key], "upgrade/level/text()")[0].data + "(" + num_owned + ")" );
-      //console.log(select(nodes[key], "name/text()")[0].data)
+      //var nodes_level = xpath.select('//upgrade[card_id[text()="'+card+'"]]/level/text()', doc);
+      if( typeof nodes_card_id[0] == 'undefined' ) {
+        var nodes_card = xpath.select('//unit[@id="'+card+'"]/name/text()', doc);
+        console.log(nodes_card[0]);
+      } else {
+        console.log(nodes_card_id[0] + '-' + nodes_level[0] +"("+ numCardsOwned +")");
+      }
     }
   }
-
-  console.log("New");
-  myCards = myCards.sort(function(val1, val2){
-    return val1 - val2;
-  });
-  console.log(myCards);
-
-//store id's in an array
-//sort it
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // for( var i = 0; i < units.length; i++ ) {
-  //     console.log(units[i]);
-  //     if(units[i]["num_owned"] != '0'){
-  //       console.log("FUCK, and put a man in the moon");
-  //     }
-
-  //     if(units[i]["num_owned"] != 0 ){
-  //      console.log(units[i]);
-  //     }
-  // }
 });
