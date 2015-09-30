@@ -19,21 +19,23 @@ Meteor.startup(function () {
 		level:  '1'
   	};
   	console.log("baseCard:");
-  	console.log(baseCard);
-  	Cards.insert(baseCard);
+  	// console.log(baseCard);
+  	// Cards.insert(baseCard);
 
   	var upgrades = totalCards[index]["upgrade"];
+  	console.log(typeof upgrades)
 
   	for (index in upgrades) {
   		var card = upgrades[index];
+  		console.log(card)
 		var subCard = {
 			_id:    card.card_id,
 			name:   name,
 			level:  card.level
 		};
-		console.log("subCard");
-		console.log(subCard);	
-		Cards.insert(subCard);
+		// console.log("subCard");
+		// console.log(subCard);	
+		// Cards.insert(subCard);
   	}
   };
 
