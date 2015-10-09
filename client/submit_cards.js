@@ -25,18 +25,20 @@ Template.cards.events({
     //Push all valid cards into my_cards
     valid_objects = 0;
     my_cards = [];
-    for(i=0; i<cards_owned.length; i++){
-      card_returned = Cards.findOne({"_id":cards_owned[i]});
-      if (typeof card_returned != "undefined" ){
-        card_returned["num_owned"] = user_cards[cards_owned[i]]["num_owned"];
-        my_cards.push(card_returned);
-      }
-    }
-      
-    //Display that show dough
-    results_section = template.find("#results");
-    for( i=0; i < my_cards.length; i++){
-      $("#results").append("<p>" + my_cards[i]["name"] + "-" + my_cards[i]["level"] + "(" + my_cards[i]["num_owned"] + ")</p>");  
-    }
+    card_returned = Cards.find({"_id": { $in: cards_owned } });
+    console.log(card_returned.fetch());
+  //   for(i=0; i<cards_owned.length; i++){
+  //     card_returned = Cards.findOne({"_id":cards_owned[i]});
+  //     if (typeof card_returned != "undefined" ){
+  //       card_returned["num_owned"] = user_cards[cards_owned[i]]["num_owned"];
+  //       my_cards.push(card_returned);
+  //     }
+  //   }
+  //
+  //   //Display that show dough
+  //   results_section = template.find("#results");
+  //   for( i=0; i < my_cards.length; i++){
+  //     $("#results").append("<p>" + my_cards[i]["name"] + "-" + my_cards[i]["level"] + "(" + my_cards[i]["num_owned"] + ")</p>");
+  //   }
   }
 });
